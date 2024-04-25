@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1714025277 source:d:\jackadventure.cpp\main.cpp
+	"defs.h"
+	"graphics.h"
+	"moving.h"
+	<iostream>
+
+1714022107 d:\jackadventure.cpp\defs.h
+
+1714024142 d:\jackadventure.cpp\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	<vector>
+	<bits/stdc++.h>
+
+1713985268 d:\jackadventure.cpp\moving.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	"graphics.h"
+
