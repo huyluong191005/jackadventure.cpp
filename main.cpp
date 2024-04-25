@@ -6,11 +6,12 @@
 int main(int argc, char* argv[])
 {
     int frame(0);
+    bool collision(0);
     int biteframecount(0);
     int disappearcount(0);
     bool over=false;
     bool startgame=false;
-    int lastlocation(0);
+    int counttodealth(0);
     Graphics graphics;
     graphics.init();
 
@@ -44,6 +45,9 @@ int main(int argc, char* argv[])
     Sprite rhinohit;
     SDL_Texture* rhinohitTexture = graphics.loadTexture(RHINOHIT_SPRITE_FILE);
     rhinohit.init(rhinohitTexture,5,RHINOHIT_CLIPS);
+    Sprite death;
+    SDL_Texture* deathTexture = graphics.loadTexture(DEATH_SPRITE_FILE);
+    death.init(deathTexture,24,DEATH_CLIPS);
 
     SDL_Texture *start=graphics.loadTexture("images\\start.png");
     SDL_Texture *fall1=graphics.loadTexture("images\\fall1.png");
@@ -62,7 +66,7 @@ int main(int argc, char* argv[])
     Mouse monster;
     monster.x=700;
     monster.y=570;
-    monster.speed=5;
+    monster.speed=4;
 
      int jumptimes=3;
 
@@ -71,7 +75,6 @@ int main(int argc, char* argv[])
     while( !quit ) {
         if(over)
         {
-            graphics.renderTexture(start,200,200);
             graphics.presentScene();
             waitUntilKeyPressed();
             quit=true;
@@ -114,7 +117,6 @@ int main(int argc, char* argv[])
         boss1_2.tick();
 
         //random monster
-        //if(monster.x<=-107) monster.x=1500;
         if(monster.speed!=0)
         {
             graphics.render2(monster.x,monster.y,rhino);
@@ -122,7 +124,7 @@ int main(int argc, char* argv[])
         }
         else{
             disappearcount++;
-            if(disappearcount<=15){
+            if(disappearcount<=20){
             graphics.render2(monster.x,monster.y,rhinohit);
             rhinohit.tick();
         }
@@ -139,25 +141,38 @@ int main(int argc, char* argv[])
             monster.speed=0;
         }
 
-
         //
+        //va cham
+
+         if(isCollisionwithmonster(man.x+90,man.y+60,45,80,monster.x,monster.y+6,95,65)&&man.x+87>monster.x)
+        {
+            man.y=monster.y-110;
+
+            man.isFreefalling=false;
+            collision=true;
+
+        }
+        else if(isCollisionwithmonster(man.x+90,man.y+60,40,80,monster.x,monster.y+6,105,65)&&man.x+95<monster.x)
+        {
+            counttodealth++;
+            collision=true;
+            man.speed=0;
+            graphics.render2(man.x,man.y,death);
+            death.tick();
+
+            if(counttodealth==23) over=true;
+        }
+        else collision=false;
 
         //xu li chuyen dong bang mui ten
          const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-        if(!over&&(!currentKeyStates[SDL_SCANCODE_UP])&&!man.isFreefalling)
+        if(!over&&(!currentKeyStates[SDL_SCANCODE_UP])&&!man.isFreefalling&&!(collision&&man.x+95<monster.x))
         {
            graphics.render2(man.x,man.y,run);
         }
 
-        if(currentKeyStates[SDL_SCANCODE_RIGHT]&&man.isFreefalling)
-        {
-            graphics.renderTexture(fall2,man.x,man.y);
 
-        }
-
-
-
-        if (currentKeyStates[SDL_SCANCODE_UP]&&!man.isJumping)
+        if (currentKeyStates[SDL_SCANCODE_UP]&&!man.isJumping&&!(collision&&man.x+95<monster.x))
         {
             graphics.render2(man.x,man.y,jump);
             jump.tick();
@@ -165,12 +180,12 @@ int main(int argc, char* argv[])
             jumptimes--;
         }else{
             man.freeFall();
-            if(currentKeyStates[SDL_SCANCODE_RIGHT]&&man.isFreefalling)
+            if(currentKeyStates[SDL_SCANCODE_RIGHT]&&man.isFreefalling&&!collision)
         {
             graphics.renderTexture(fall2,man.x,man.y);
 
         }
-            else if(man.isFreefalling&&man.y<510)
+            else if(man.isFreefalling&&man.y<510&&!collision)
             {
               graphics.renderTexture(fall1,man.x,man.y);
             }
@@ -207,7 +222,7 @@ int main(int argc, char* argv[])
         }
 
 
-        if(frog.x+265>man.x)
+        if(frog.x+265>man.x||frog.x+310>monster.x)
         {
             graphics.render2(frog.x,frog.y,boss1_2);
             frog.x+=7;
@@ -215,8 +230,6 @@ int main(int argc, char* argv[])
                     biteframecount++;
                     man.x=frog.x+120;
                     man.y=frog.y+50;
-
-                    lastlocation=man.y;
                     if(biteframecount%15==0) over=true;
 
             }
@@ -243,13 +256,14 @@ int main(int argc, char* argv[])
         }
         if(man.y<=350) man.height=1;
         else if(man.y<=410) man.height=10;
-        else if(man.y<=470) man.height=20;
+        else if(man.y<=470) man.height=30;
         else man.height=40;
         //
+
         //hitbox
-        graphics.drawRect(man.x+90,man.y+60,45,80);
-        graphics.drawRect(monster.x,monster.y+6,105,65);
-        graphics.drawRect(frog.x+100,frog.y+80,200,150);
+        //graphics.drawRect(man.x+90,man.y+60,45,80);
+        //graphics.drawRect(monster.x,monster.y+6,105,65);
+        //graphics.drawRect(frog.x+100,frog.y+80,200,150);
         //
         man.move();
 

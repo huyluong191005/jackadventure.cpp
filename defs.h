@@ -15,6 +15,7 @@ const char* BOSS1_SPRITE_FILE = "images\\bossjump.png";
 const char* BOSS1_2_SPRITE_FILE = "images\\bossbite.png";
 const char* RHINO_SPRITE_FILE = "images\\Run(52x34).png";
 const char* RHINOHIT_SPRITE_FILE = "images\\Hit(52x34).png";
+const char* DEATH_SPRITE_FILE = "images\\Death.png";
 const int RUN_CLIPS[][4] = {
     {0,0,220,220},
     {220,0,220,220},
@@ -27,6 +28,33 @@ const int RUN_CLIPS[][4] = {
     {1760,0,220,220}
 };
 const int RUN_FRAMES = sizeof(RUN_CLIPS)/sizeof(int)/4;
+const int DEATH_CLIPS[][4] = {
+    {0,0,220,220},
+    {220,0,220,220},
+    {440,0,220,220},
+    {660,0,220,220},
+    {880,0,220,220},
+    {1100,0,220,220},
+    {1320,0,220,220},
+    {1540,0,220,220},
+    {1760,0,220,220},
+    {1980,0,220,220},
+    {2200,0,220,220},
+    {2420,0,220,220},
+    {2640,0,220,220},
+    {2860,0,220,220},
+    {3080,0,220,220},
+    {3300,0,220,220},
+    {3520,0,220,220},
+    {3740,0,220,220},
+    {3960,0,220,220},
+    {4180,0,220,220},
+    {4400,0,220,220},
+    {4620,0,220,220},
+    {4840,0,220,220},
+    {5060,0,220,220}
+
+};
 const int BOSS1_CLIPS[][4] = {
     {304,492,304,246},
     {608,492,304,246},

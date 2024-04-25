@@ -38,7 +38,7 @@ struct Mouse {
     }
     void runback()
     {
-        dx=-5;
+        dx=-speed/2;
     }
     void makeAjump()
     {
@@ -61,35 +61,17 @@ struct Mouse {
     return SDL_HasIntersection(&rect1, &rect2);
 }
 
-bool isCollisionwithpipe(Mouse mouse,Mouse os1,Mouse os2,Mouse os3)
+bool isCollisionwithmonster(int x1,int y1,int manwidth,int manheight,int x2,int y2,int monsterwidth,int monsterheight)
 {
-    SDL_Rect birdRect = { mouse.x, mouse.y, birdWidth, birdHeight };
-    SDL_Rect pipe1Rect = { os1.x, os1.y, pipeWidth, pipeHeight };
-    SDL_Rect pipe2Rect = { os2.x, os2.y, pipeWidth, pipeHeight };
-    SDL_Rect pipe3Rect = { os3.x, os3.y, pipeWidth, pipeHeight };
-
-    if ((birdRect.x + birdWidth > pipe1Rect.x && birdRect.x < pipe1Rect.x + pipeWidth) ||
-    (birdRect.x + birdWidth > pipe2Rect.x && birdRect.x < pipe2Rect.x + pipeWidth) ||
-    (birdRect.x + birdWidth > pipe3Rect.x && birdRect.x < pipe3Rect.x + pipeWidth)) {
-
-        if (!(birdRect.y > GAP_TOP && birdRect.y + birdHeight < GAP_TOP + GAP_HEIGHT)) {
-
-        if (isCollision(birdRect, pipe1Rect)  || isCollision(birdRect, pipe3Rect)) {
-
-            return true;
-        }
+    SDL_Rect manRect = {x1,y1,manwidth,manheight };
+    SDL_Rect monsterRect = { x2,y2,monsterwidth,monsterheight };
+    if(isCollision(manRect,monsterRect))
+    {
+        return true;
     }
-        if (!(birdRect.y > 152 && birdRect.y + birdHeight < 152 + GAP_HEIGHT))
-     {
-         if(isCollision(birdRect,pipe2Rect))
-         {
-             return true;
-         }
-     }
-
-
-}
     return false;
+
+
 }
 
 
