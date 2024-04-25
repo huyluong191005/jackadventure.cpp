@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
     Mouse monster;
     monster.x=700;
     monster.y=570;
-    monster.speed=4;
+    monster.speed=5;
 
      int jumptimes=3;
 
