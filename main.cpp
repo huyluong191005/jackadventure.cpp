@@ -3,6 +3,7 @@
 #include "moving.h"
 #include "background.h"
 #include "monster.h"
+#include "music.h"
 #include <iostream>
 
 int main(int argc, char* argv[])
@@ -27,14 +28,11 @@ int main(int argc, char* argv[])
     jump.init(jumpTexture, 4, JUMP_CLIPS);
     Sprite boss1;
     SDL_Texture* boss1Texture = graphics.loadTexture(BOSS1_SPRITE_FILE);
-    boss1.init(boss1Texture, 17, BOSS1_CLIPS);
     SDL_Texture* boss1_2Texture = graphics.loadTexture(BOSS1_2_SPRITE_FILE);
     Sprite rhino;
     SDL_Texture* rhinoTexture = graphics.loadTexture(RHINO_SPRITE_FILE);
     rhino.init(rhinoTexture,6,RHINO_CLIPS);
-    Sprite rhinohit;
     SDL_Texture* rhinohitTexture = graphics.loadTexture(RHINOHIT_SPRITE_FILE);
-    rhinohit.init(rhinohitTexture,5,RHINOHIT_CLIPS);
     Sprite death;
     SDL_Texture* deathTexture = graphics.loadTexture(DEATH_SPRITE_FILE);
     death.init(deathTexture,24,DEATH_CLIPS);

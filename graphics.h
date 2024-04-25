@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 #include "defs.h"
 #include <vector>
+#include <SDL_mixer.h>
 
 #include <bits/stdc++.h>
 struct ScrollingBackground {
@@ -81,8 +82,10 @@ struct Graphics {
 
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
         SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
+        if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+   logErrorAndExit( "SDL_mixer could not initialize! SDL_mixer Error: %s\n",
+                    Mix_GetError() );
+}
 
     }
 
@@ -134,6 +137,7 @@ struct Graphics {
 
     void quit()
     {
+        Mix_Quit();
         IMG_Quit();
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
