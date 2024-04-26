@@ -9,6 +9,7 @@
 int main(int argc, char* argv[])
 {
     int frame(0);
+    bool poison(0);
     bool collision(0),collision2(0);
     int biteframecount(0);
     int disappearcount(0);
@@ -30,6 +31,8 @@ int main(int argc, char* argv[])
     Sprite boss1;
     SDL_Texture* boss1Texture = graphics.loadTexture(BOSS1_SPRITE_FILE);
     SDL_Texture* boss1_2Texture = graphics.loadTexture(BOSS1_2_SPRITE_FILE);
+    Sprite poisonattack;
+    SDL_Texture* poisonattackTexture = graphics.loadTexture(POISONATTACK_SPRITE_FILE);
     Sprite rhino;
     SDL_Texture* rhinoTexture = graphics.loadTexture(RHINO_SPRITE_FILE);
     rhino.init(rhinoTexture,6,RHINO_CLIPS);
@@ -43,6 +46,8 @@ int main(int argc, char* argv[])
     Sprite boss2;
     SDL_Texture* boss2Texture=graphics.loadTexture(BOSS2_SPRITE_FILE);
     boss2.init(boss2Texture,19,BOSS2_CLIPS);
+    Sprite poisons;
+    SDL_Texture* poisonTexture=graphics.loadTexture(POISON_SPRITE_FILE);
 
     SDL_Texture *start=graphics.loadTexture("images\\start.png");
     SDL_Texture *gameover=graphics.loadTexture("images\\gameover1.png");
@@ -63,15 +68,18 @@ int main(int argc, char* argv[])
     Mouse monster;
     monster.x=900;
     monster.y=570;
-    monster.speed=4;
+    monster.speed=5;
     Mouse bat;
     bat.x=500;
     bat.y=400;
-    bat.speed=4;
+    bat.speed=7;
     Mouse crab;
     crab.x=-200;
     crab.y=415;
     crab.speed=5;
+    Mouse poi;
+    poi.y=570;
+    poi.speed=4;
 
     int jumptimes=3;
     bool quit = false;
@@ -122,7 +130,7 @@ int main(int argc, char* argv[])
 
         background2(graphics,layer6,layer7,layer8,layer9);
         //va cham
-        if(isCollisionwithmonster(man.x+90,man.y+60,45,80,bat.x+15,bat.y+5,40,30))
+        if(isCollisionwithmonster(man.x+90,man.y+70,45,70,bat.x+15,bat.y+5,40,30)||isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29))
         {
             collision2=true;
         }
@@ -191,15 +199,11 @@ int main(int argc, char* argv[])
         if(currentKeyStates[SDL_SCANCODE_RIGHT]&&!collision2)
         {
             man.run();
-            if(!currentKeyStates[SDL_SCANCODE_UP])
-            {
-                run.tick();
-            }
         }
+
         if(currentKeyStates[SDL_SCANCODE_LEFT]&&!collision2)
         {
             man.runback();
-            run.tick();
         }
         if(currentKeyStates[SDL_SCANCODE_DOWN]&&man.y<=495&&!collision2)
         {
@@ -207,7 +211,7 @@ int main(int argc, char* argv[])
         }
         //
           //monster
-        frogMove(graphics,frog,man,boss1,boss1Texture,boss1_2Texture,frame,biteframecount,over);
+        frogMove(graphics,frog,man,poi,boss1,poisonattack,poisons,boss1Texture,boss1_2Texture,poisonattackTexture,poisonTexture,frame,biteframecount,over,poison);
         rhinoMove(graphics,monster,frog,rhino,rhinoTexture,rhinohitTexture,disappearcount);
         batMove(graphics,batman,bat,frog,batTexture,bat2Texture,disappearcount2);
         //
@@ -225,16 +229,18 @@ int main(int argc, char* argv[])
         else man.height=40;
         //
         //hitbox
-        //graphics.drawRect(man.x+90,man.y+60,45,80);
-        //graphics.drawRect(monster.x,monster.y+6,105,65);
+        graphics.drawRect(man.x+90,man.y+80,45,60);
+        graphics.drawRect(monster.x,monster.y+6,105,65);
         //graphics.drawRect(frog.x+100,frog.y+80,200,150);
-        //graphics.drawRect(bat.x+15,bat.y+5,50,40);
+        graphics.drawRect(bat.x+15,bat.y+5,40,30);
+        graphics.drawRect(poi.x,poi.y+1,84,26);
         //graphics.drawRect(crab.x+35,crab.y+5,155,215);
         //
+        run.tick();
         man.move();
         man.x-=4;
         graphics.presentScene();
-        SDL_Delay(45);
+        SDL_Delay(40);
     }
 
 

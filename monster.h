@@ -6,15 +6,26 @@
 #include "graphics.h"
 #include "moving.h"
 
-void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Sprite &boss1,SDL_Texture* boss1Texture,SDL_Texture* boss1_2Texture,int &frame,int &biteframecount,bool &over )
+void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1,Sprite& poisonattack,Sprite &poisons,SDL_Texture* boss1Texture,SDL_Texture* boss1_2Texture,SDL_Texture *poisonattackTexture,SDL_Texture *poisonTexture,int &frame,int &biteframecount,bool &over,bool &poison )
 {
-    //if(frame>=200&&frame<=400) frog.speed=0;
-    //else frog.speed=2;
-    if(frog.x<=-180)
+    poisonattack.init(poisonattackTexture,17,POISONATTACK_CLIPS);
+    poisons.init(poisonTexture,12,POISON_CLIPS);
+
+    frog.speed=2;
+        if(frame>=100&&frame<=122||frame>=350&&frame<=372||frame>=600&&frame<=622||frame>=850&&frame<=872||frame>=1100&&frame<=1122)
+        {
+
+        if(frame==118||frame==368||frame==618||frame==868||frame==1118) poi.x=frog.x+250;
+
+            graphics.render2(frog.x+110,frog.y+95,poisonattack);
+
+        }
+         else {
+       if(frog.x<=-180)
         {
             frog.x+=frog.speed;
         }
-        if(frog.x<=-120)
+        if(frog.x<=-110)
         {
             frog.x+=frog.speed;
         }
@@ -39,10 +50,19 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Sprite &boss1,SDL_Textur
                 boss1.init(boss1Texture,17,BOSS1_CLIPS);
                 biteframecount=0;
         }
+
+        if(frame>=118){graphics.render2(poi.x,poi.y,poisons);
+        poi.x+=poi.speed;}
+
+
         graphics.render2(frog.x,frog.y,boss1);
+
         boss1.tick();
 
+        }
 
+        poisonattack.tick();
+        poisons.tick();
         if(frame%17<=6) frog.x-=(4*frog.speed);
         if(frame%17>=7) frog.x+=frog.speed;
         //
@@ -53,7 +73,8 @@ void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_T
         {
             rhino.init(rhinoTexture,6,RHINO_CLIPS);
         }
-        else{
+    if(monster.speed==0)
+        {
             disappearcount++;
             if(disappearcount<=20){
             rhino.init(rhinohitTexture,5,RHINOHIT_CLIPS);
@@ -89,7 +110,7 @@ void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Textur
                  bat.x=1000+(rand()%500);
                  bat.y=400+(rand()%100);
                  disappearcount2=0;
-                 bat.speed=4;
+                 bat.speed=7;
             }
         }
 

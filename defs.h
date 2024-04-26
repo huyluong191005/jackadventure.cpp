@@ -18,7 +18,27 @@ const char* RHINOHIT_SPRITE_FILE = "images\\Hit(52x34).png";
 const char* DEATH_SPRITE_FILE = "images\\Death.png";
 const char* BAT_SPRITE_FILE = "images\\Flying (46x30).png";
 const char* BOSS2_SPRITE_FILE = "images\\walk_look up.png";
+const char* POISONATTACK_SPRITE_FILE = "images\\poison-attack.png";
 const char* BAT2_SPRITE_FILE = "images\\Hit (46x30).png";
+const char* POISON_SPRITE_FILE = "images\\poison-spit.png";
+
+
+const int POISON_CLIPS[][4] = {
+
+    {0,0,89,29},
+    {89,0,89,29},
+    {178,0,89,29},
+    {267,0,89,29},
+    {0,29,89,29},
+    {89,29,89,29},
+    {178,29,89,29},
+    {267,29,89,29},
+    {0,58,89,29},
+    {89,58,89,29},
+    {178,58,89,29},
+    {267,58,89,29}
+
+};
 
 const int RUN_CLIPS[][4] = {
     {0,0,220,220},
@@ -100,12 +120,38 @@ const int BOSS1_2_CLIPS[][4] = {
     {1520,0,304,246},
 
 };
-const int BOSS1_2_FRAMES = sizeof(BOSS1_CLIPS)/sizeof(int)/4;
+const int BOSS1_2_FRAMES = sizeof(BOSS1_2_CLIPS)/sizeof(int)/4;
 const int JUMP_CLIPS[][4] = {
     {0,0,220,220},
     {220,0,220,220},
     {440,0,220,220},
     {660,0,220,220}
+
+};
+const int POISONATTACK_CLIPS[][4] = {
+
+   {905,0,181,152},
+   {724,0,181,152},
+   {543,0,181,152},
+   {362,0,181,152},
+   {181,0,181,152},
+   {0,0,181,152},
+   {905,152,181,152},
+   {724,152,181,152},
+   {543,152,181,152},
+   {362,152,181,152},
+   {181,152,181,152},
+   {0,152,181,152},
+   {905,304,181,152},
+   {724,304,181,152},
+   {543,304,181,152},
+   {362,304,181,152},
+   {181,304,181,152}
+
+
+
+
+
 
 };
 
