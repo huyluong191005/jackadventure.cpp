@@ -70,7 +70,41 @@ void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_T
         {
             monster.speed=0;
         }
+        monster.x-=monster.speed;
         rhino.tick();
         graphics.render2(monster.x,monster.y,rhino);
 }
+void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Texture *batTexture,SDL_Texture *bat2Texture,int &disappearcount2)
+{
+         if(bat.speed!=0)
+        {
+            batman.init(batTexture,7,BAT_CLIPS);
+        }
+        else {
+             disappearcount2++;
+            if(disappearcount2<=20){
+                    batman.init(bat2Texture,5,BAT2_CLIPS);
+            }
+            else{
+                 bat.x=1000+(rand()%500);
+                 bat.y=400+(rand()%100);
+                 disappearcount2=0;
+                 bat.speed=4;
+            }
+        }
+
+        bat.x-=bat.speed;
+        if(bat.x<=-50) {
+            bat.x=1000+(rand()%500);
+            bat.y=400+(rand()%100);
+        }
+        if(isCollisionwithmonster(frog.x+100,frog.y+80,200,150,bat.x+20,bat.y+10,45,30))
+        {
+            bat.speed=0;
+        }
+
+        graphics.render2(bat.x,bat.y,batman);
+        batman.tick();
+}
+
 #endif

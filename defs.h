@@ -16,6 +16,10 @@ const char* BOSS1_2_SPRITE_FILE = "images\\bossbite.png";
 const char* RHINO_SPRITE_FILE = "images\\Run(52x34).png";
 const char* RHINOHIT_SPRITE_FILE = "images\\Hit(52x34).png";
 const char* DEATH_SPRITE_FILE = "images\\Death.png";
+const char* BAT_SPRITE_FILE = "images\\Flying (46x30).png";
+const char* BOSS2_SPRITE_FILE = "images\\walk_look up.png";
+const char* BAT2_SPRITE_FILE = "images\\Hit (46x30).png";
+
 const int RUN_CLIPS[][4] = {
     {0,0,220,220},
     {220,0,220,220},
@@ -120,6 +124,48 @@ const int RHINOHIT_CLIPS[][4] = {
     {214,0,107,70},
     {321,0,107,70},
     {428,0,107,70}
+
+};
+const int BAT_CLIPS[][4] = {
+   {0,0,75,49},
+   {75,0,75,49},
+   {150,0,75,49},
+   {225,0,75,49},
+   {300,0,75,49},
+   {375,0,75,49},
+   {450,0,75,49},
+};
+const int BAT2_CLIPS[][4] = {
+   {0,0,75,49},
+   {75,0,75,49},
+   {150,0,75,49},
+   {225,0,75,49},
+   {300,0,75,49}
+
+};
+const int BOSS2_CLIPS[][4] = {
+
+    {639,630,213,210},
+    {426,630,213,210},
+    {213,630,213,210},
+    {0,630,213,210},
+    {852,420,213,210},
+    {639,420,213,210},
+    {426,420,213,210},
+    {213,420,213,210},
+    {0,420,213,210},
+    {852,210,213,210},
+    {639,210,213,210},
+    {426,210,213,210},
+    {213,210,213,210},
+    {0,210,213,210},
+    {852,0,213,210},
+    {639,0,213,210},
+    {426,0,213,210},
+    {213,0,213,210},
+    {0,0,213,210}
+
+
 
 };
 const int RHINO_FRAMES = sizeof(RHINO_CLIPS)/sizeof(int)/4;
