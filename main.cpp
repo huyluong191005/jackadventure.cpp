@@ -78,6 +78,7 @@ int main(int argc, char* argv[])
     crab.y=415;
     crab.speed=5;
     Mouse poi;
+    poi.x=-150;
     poi.y=570;
     poi.speed=4;
 
@@ -97,37 +98,10 @@ int main(int argc, char* argv[])
 
         }
         frame++;//tinh so frame
+        if(frame==1200) frame=0;
 
         background1(graphics,layer1,layer2,layer3,lights1,layer4,layer5,lights2);
-        if(frame==1200) frame=0;
-        if(frame==200)
-        {
-            if(crab.x<=0)
-            {
-                crab.x=-200;
-                crab.speed=5;
-            }
-            if(crab.x>290)
-            {
-                crab.x=SCREEN_WIDTH;
-                crab.speed=-5;
-            }
-        }
-        if(frame>200&&frame<=650)
-        {
-            crab.x+=crab.speed;
-            if(crab.x>=290&&crab.speed>0&&frame<=550)
-            {
-                crab.x=290;
-            }
-            if(crab.x<=290&&crab.speed<0&&frame<=550)
-            {
-                crab.x=290;
-            }
-            graphics.render2(crab.x,crab.y,boss2);
-            boss2.tick();
-        }
-
+        crabMove(graphics,crab,boss2,frame);
         background2(graphics,layer6,layer7,layer8,layer9);
         //va cham
         if(isCollisionwithmonster(man.x+90,man.y+70,45,70,bat.x+15,bat.y+5,40,30)||isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29))
@@ -212,7 +186,7 @@ int main(int argc, char* argv[])
         //
           //monster
         frogMove(graphics,frog,man,poi,boss1,poisonattack,poisons,boss1Texture,boss1_2Texture,poisonattackTexture,poisonTexture,frame,biteframecount,over,poison);
-        rhinoMove(graphics,monster,frog,rhino,rhinoTexture,rhinohitTexture,disappearcount);
+        rhinoMove(graphics,monster,frog,rhino,rhinoTexture,rhinohitTexture,disappearcount,poi,frame);
         batMove(graphics,batman,bat,frog,batTexture,bat2Texture,disappearcount2);
         //
         //xu li nhay nhan vat
@@ -233,7 +207,7 @@ int main(int argc, char* argv[])
         graphics.drawRect(monster.x,monster.y+6,105,65);
         //graphics.drawRect(frog.x+100,frog.y+80,200,150);
         graphics.drawRect(bat.x+15,bat.y+5,40,30);
-        graphics.drawRect(poi.x,poi.y+1,84,26);
+        graphics.drawRect(poi.x,poi.y+1,84,29);
         //graphics.drawRect(crab.x+35,crab.y+5,155,215);
         //
         run.tick();

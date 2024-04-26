@@ -12,10 +12,10 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
     poisons.init(poisonTexture,12,POISON_CLIPS);
 
     frog.speed=2;
-        if(frame>=100&&frame<=122||frame>=350&&frame<=372||frame>=600&&frame<=622||frame>=850&&frame<=872||frame>=1100&&frame<=1122)
+        if(frame>=100&&frame<=122||frame>=300&&frame<=322||frame>=500&&frame<=522||frame>=700&&frame<=722||frame>=900&&frame<=922||frame>=1100&&frame<=1122)
         {
 
-        if(frame==118||frame==368||frame==618||frame==868||frame==1118) poi.x=frog.x+250;
+        if(frame==118||frame==318||frame==518||frame==718||frame==918||frame==1118) poi.x=frog.x+250;
 
             graphics.render2(frog.x+110,frog.y+95,poisonattack);
 
@@ -67,8 +67,9 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
         if(frame%17>=7) frog.x+=frog.speed;
         //
 }
-void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount)
+void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount,Mouse &poi,int &frame)
 {
+
     if(monster.speed!=0)
         {
             rhino.init(rhinoTexture,6,RHINO_CLIPS);
@@ -84,12 +85,12 @@ void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_T
             monster.x=800+(rand()%300);
             monster.speed=4;
             disappearcount=0;
-
         }
         }
-        if(frog.x+250>=monster.x)
+        if(frog.x+250>=monster.x||isCollisionwithmonster(monster.x,monster.y+6,105,65,poi.x,poi.y+1,84,29))
         {
             monster.speed=0;
+            poi.x=3000;
         }
         monster.x-=monster.speed;
         rhino.tick();
@@ -126,6 +127,36 @@ void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Textur
 
         graphics.render2(bat.x,bat.y,batman);
         batman.tick();
+}
+void crabMove(Graphics &graphics,Mouse &crab,Sprite &boss2,int &frame)
+{
+    if(frame==200)
+        {
+            if(crab.x<=0)
+            {
+                crab.x=-200;
+                crab.speed=5;
+            }
+            if(crab.x>290)
+            {
+                crab.x=SCREEN_WIDTH;
+                crab.speed=-5;
+            }
+        }
+        if(frame>200&&frame<=650)
+        {
+            crab.x+=crab.speed;
+            if(crab.x>=290&&crab.speed>0&&frame<=550)
+            {
+                crab.x=290;
+            }
+            if(crab.x<=290&&crab.speed<0&&frame<=550)
+            {
+                crab.x=290;
+            }
+            graphics.render2(crab.x,crab.y,boss2);
+            boss2.tick();
+        }
 }
 
 #endif

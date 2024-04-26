@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1714151610 source:d:\jackadventure.cpp\main.cpp
+1714153163 source:d:\jackadventure.cpp\main.cpp
 	"defs.h"
 	"graphics.h"
 	"moving.h"
@@ -28,7 +28,7 @@
 	"graphics.h"
 	"defs.h"
 
-1714150625 d:\jackadventure.cpp\monster.h
+1714153506 d:\jackadventure.cpp\monster.h
 	"background.h"
 	"defs.h"
 	"graphics.h"
