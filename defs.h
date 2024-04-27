@@ -21,7 +21,21 @@ const char* BOSS2_SPRITE_FILE = "images\\walk_look up.png";
 const char* POISONATTACK_SPRITE_FILE = "images\\poison-attack.png";
 const char* BAT2_SPRITE_FILE = "images\\Hit (46x30).png";
 const char* POISON_SPRITE_FILE = "images\\poison-spit.png";
-
+const char* POISONIMPACT_SPRITE_FILE = "images\\poison-impact.png";
+const int POISONIMPACT_CLIPS[][4] = {
+    {0,0,63,100},
+    {63,0,63,100},
+    {126,0,63,100},
+    {189,0,63,100},
+    {0,100,63,100},
+    {63,100,63,100},
+    {126,100,63,100},
+    {189,100,63,100},
+    {0,200,63,100},
+    {63,200,63,100},
+    {126,200,63,100},
+    {189,200,63,100}
+};
 
 const int POISON_CLIPS[][4] = {
 

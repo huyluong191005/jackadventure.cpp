@@ -6,10 +6,13 @@
 #include "graphics.h"
 #include "moving.h"
 
-void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1,Sprite& poisonattack,Sprite &poisons,SDL_Texture* boss1Texture,SDL_Texture* boss1_2Texture,SDL_Texture *poisonattackTexture,SDL_Texture *poisonTexture,int &frame,int &biteframecount,bool &over,bool &poison )
+void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1,Sprite& poisonattack,Sprite &poisons,Sprite &poisonimpact,SDL_Texture* boss1Texture,SDL_Texture* boss1_2Texture,SDL_Texture *poisonattackTexture,SDL_Texture *poisonTexture,SDL_Texture* poisonimpactTexture,int &frame,int &biteframecount,bool &over,bool &poison )
 {
     poisonattack.init(poisonattackTexture,17,POISONATTACK_CLIPS);
     poisons.init(poisonTexture,12,POISON_CLIPS);
+    poisonimpact.init(poisonimpactTexture,12,POISONIMPACT_CLIPS);
+
+    if(isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29)) poi.x=3000;
 
     frog.speed=2;
         if(frame>=100&&frame<=122||frame>=300&&frame<=322||frame>=500&&frame<=522||frame>=700&&frame<=722||frame>=900&&frame<=922||frame>=1100&&frame<=1122)
@@ -63,11 +66,12 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
 
         poisonattack.tick();
         poisons.tick();
+        poisonimpact.tick();
         if(frame%17<=6) frog.x-=(4*frog.speed);
         if(frame%17>=7) frog.x+=frog.speed;
         //
 }
-void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount,Mouse &poi,int &frame)
+void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,Sprite &poisonimpact,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount,Mouse &poi,int &frame,bool &collision4)
 {
 
     if(monster.speed!=0)
@@ -77,11 +81,18 @@ void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_T
     if(monster.speed==0)
         {
             disappearcount++;
-            if(disappearcount<=20){
+            if(disappearcount<=16){
+            if(disappearcount<=12&&collision4)
+            {
+                graphics.render2(monster.x-15,545,poisonimpact);
+                monster.x+=5;
+            }
             rhino.init(rhinohitTexture,5,RHINOHIT_CLIPS);
         }
         else
         {
+            collision4=0;
+            poi.x=3000;
             monster.x=800+(rand()%300);
             monster.speed=4;
             disappearcount=0;
@@ -89,11 +100,14 @@ void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,SDL_T
         }
         if(frog.x+250>=monster.x||isCollisionwithmonster(monster.x,monster.y+6,105,65,poi.x,poi.y+1,84,29))
         {
+            if(isCollisionwithmonster(monster.x,monster.y+6,105,65,poi.x,poi.y+1,84,29)) collision4=true;
             monster.speed=0;
             poi.x=3000;
         }
         monster.x-=monster.speed;
+
         rhino.tick();
+
         graphics.render2(monster.x,monster.y,rhino);
 }
 void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Texture *batTexture,SDL_Texture *bat2Texture,int &disappearcount2)

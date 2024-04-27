@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 {
     int frame(0);
     bool poison(0);
-    bool collision(0),collision2(0);
+    bool collision(0),collision2(0),collision3(0),collision4(0);
     int biteframecount(0);
     int disappearcount(0);
     int disappearcount2(0);
@@ -48,7 +48,8 @@ int main(int argc, char* argv[])
     boss2.init(boss2Texture,19,BOSS2_CLIPS);
     Sprite poisons;
     SDL_Texture* poisonTexture=graphics.loadTexture(POISON_SPRITE_FILE);
-
+    Sprite poisonimpact;
+    SDL_Texture* poisonimpactTexture=graphics.loadTexture(POISONIMPACT_SPRITE_FILE);
     SDL_Texture *start=graphics.loadTexture("images\\start.png");
     SDL_Texture *gameover=graphics.loadTexture("images\\gameover1.png");
     SDL_Texture *fall1=graphics.loadTexture("images\\fall1.png");
@@ -104,6 +105,7 @@ int main(int argc, char* argv[])
         crabMove(graphics,crab,boss2,frame);
         background2(graphics,layer6,layer7,layer8,layer9);
         //va cham
+
         if(isCollisionwithmonster(man.x+90,man.y+70,45,70,bat.x+15,bat.y+5,40,30)||isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29))
         {
             collision2=true;
@@ -112,17 +114,24 @@ int main(int argc, char* argv[])
         {
             man.y=510;
             counttodealth++;
-            if(frame==1) man.y=man.y+(510-man.y)/12;
-            if(frame==2) man.y=man.y+(510-man.y)/11;
-            if(frame==3) man.y=man.y+(510-man.y)/5;
-            if(frame==4) man.y=man.y+(510-man.y)/4;
-            if(frame==5) man.y=man.y+(510-man.y)/3;
-            if(frame==6) man.y=man.y+(510-man.y)/2;
-            if(frame==7) man.y=510;
-            if(frame>7){
             graphics.render2(man.x,man.y,death);
             death.tick();
+            if(counttodealth==23) over=true;
+        }
+          if(isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29))
+        {
+            collision3=true;
+        }
+        if(collision3)
+        {
+            man.y=510;
+            counttodealth++;
+            if(counttodealth<=11)
+            {
+                graphics.render2(man.x+45,545,poisonimpact);
             }
+            graphics.render2(man.x,man.y,death);
+            death.tick();
             if(counttodealth==23) over=true;
         }
 
@@ -185,8 +194,8 @@ int main(int argc, char* argv[])
         }
         //
           //monster
-        frogMove(graphics,frog,man,poi,boss1,poisonattack,poisons,boss1Texture,boss1_2Texture,poisonattackTexture,poisonTexture,frame,biteframecount,over,poison);
-        rhinoMove(graphics,monster,frog,rhino,rhinoTexture,rhinohitTexture,disappearcount,poi,frame);
+        frogMove(graphics,frog,man,poi,boss1,poisonattack,poisons,poisonimpact,boss1Texture,boss1_2Texture,poisonattackTexture,poisonTexture,poisonimpactTexture,frame,biteframecount,over,poison);
+        rhinoMove(graphics,monster,frog,rhino,poisonimpact,rhinoTexture,rhinohitTexture,disappearcount,poi,frame,collision4);
         batMove(graphics,batman,bat,frog,batTexture,bat2Texture,disappearcount2);
         //
         //xu li nhay nhan vat
@@ -203,11 +212,11 @@ int main(int argc, char* argv[])
         else man.height=40;
         //
         //hitbox
-        graphics.drawRect(man.x+90,man.y+80,45,60);
-        graphics.drawRect(monster.x,monster.y+6,105,65);
+        //graphics.drawRect(man.x+90,man.y+80,45,60);
+        //graphics.drawRect(monster.x,monster.y+6,105,65);
         //graphics.drawRect(frog.x+100,frog.y+80,200,150);
-        graphics.drawRect(bat.x+15,bat.y+5,40,30);
-        graphics.drawRect(poi.x,poi.y+1,84,29);
+        //graphics.drawRect(bat.x+15,bat.y+5,40,30);
+        //graphics.drawRect(poi.x,poi.y+1,84,29);
         //graphics.drawRect(crab.x+35,crab.y+5,155,215);
         //
         run.tick();
