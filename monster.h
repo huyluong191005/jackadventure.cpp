@@ -123,7 +123,7 @@ void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Textur
             }
             else{
                  bat.x=1000+(rand()%500);
-                 bat.y=400+(rand()%100);
+                 bat.y=400+(rand()%150);
                  disappearcount2=0;
                  bat.speed=7;
             }
