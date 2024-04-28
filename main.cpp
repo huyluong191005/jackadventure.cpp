@@ -132,17 +132,31 @@ int main(int argc, char* argv[])
         //va cham
 
 
-        if(isCollisionwithmonster(man.x+90,man.y+70,45,70,bat.x+15,bat.y+5,40,30)||isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29))
+        if(isCollisionwithmonster(man.x+90,man.y+70,45,70,bat.x+15,bat.y+5,40,30)||isCollisionwithmonster(man.x+90,man.y+70,45,70,as1.x+9,as1.y+5,41,41)||isCollisionwithmonster(man.x+90,man.y+70,45,70,as2.x+9,as2.y+5,41,41)||isCollisionwithmonster(man.x+90,man.y+70,45,70,as3.x+9,as3.y+5,41,41))
         {
             collision2=true;
         }
         if(collision2)
         {
-            man.y=510;
+
             counttodealth++;
-            graphics.render2(man.x,man.y,death);
-            death.tick();
-            if(counttodealth==23) over=true;
+
+            for(int i=1;i<=8;i++)
+            {
+                if(counttodealth==i){
+                man.y+=(510-man.y)/(10-i);
+                graphics.renderTexture(fall1,man.x,man.y);
+                }
+            }
+            if(counttodealth==9) man.y=510;
+
+            if(counttodealth>=9&&counttodealth<=32)
+            {
+                graphics.render2(man.x,man.y,death);
+                death.tick();
+            }
+
+            if(counttodealth==32) over=true;
         }
           if(isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29))
         {
@@ -250,7 +264,7 @@ int main(int argc, char* argv[])
         man.move();
         man.x-=4;
         graphics.presentScene();
-        SDL_Delay(30);
+        SDL_Delay(35);
     }
 
 
