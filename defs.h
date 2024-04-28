@@ -22,6 +22,24 @@ const char* POISONATTACK_SPRITE_FILE = "images\\poison-attack.png";
 const char* BAT2_SPRITE_FILE = "images\\Hit (46x30).png";
 const char* POISON_SPRITE_FILE = "images\\poison-spit.png";
 const char* POISONIMPACT_SPRITE_FILE = "images\\poison-impact.png";
+const char* LASER_SPRITE_FILE = "images\\laser.png";
+const char* ASTEROID_SPRITE_FILE = "images\\asteroid.png";
+const int ASTEROID_CLIPS[][4] = {
+    {50,0,50,50},
+    {0,0,50,50},
+    {50,50,50,50}
+
+
+};
+const int LASER_CLIPS[][4] = {
+    {0,0,182,500},
+    {0,500,182,500},
+    {0,1000,182,500},
+    {0,1500,182,500},
+    {0,2000,182,500},
+    {0,2500,182,500}
+};
+
 const int POISONIMPACT_CLIPS[][4] = {
     {0,0,63,100},
     {63,0,63,100},

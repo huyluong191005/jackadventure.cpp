@@ -36,16 +36,19 @@ void background1(Graphics &graphics,ScrollingBackground &layer1,ScrollingBackgro
         lights2.scroll(3);
         graphics.render(lights2);
 }
-void background2(Graphics graphics,ScrollingBackground &layer6,ScrollingBackground &layer7,ScrollingBackground &layer8,ScrollingBackground &layer9)
+void background2(Graphics graphics,ScrollingBackground &layer6,ScrollingBackground &layer8,ScrollingBackground &layer9)
 {
        layer6.scroll(6);
         graphics.render(layer6);
-        layer7.scroll(4);
-        graphics.render(layer7);
         layer8.scroll(4);
         graphics.render(layer8);
         layer9.scroll(3);
         graphics.render(layer9);
+}
+void background3(Graphics &graphics,ScrollingBackground &layer7)
+{
+    layer7.scroll(4);
+    graphics.render(layer7);
 }
 void destroybackground(Graphics &graphics,ScrollingBackground &layer1,ScrollingBackground &layer2,ScrollingBackground &layer3,ScrollingBackground &lights1,ScrollingBackground &layer4,ScrollingBackground &layer5,ScrollingBackground &lights2,ScrollingBackground &layer6,ScrollingBackground &layer7,ScrollingBackground &layer8,ScrollingBackground &layer9)
 {

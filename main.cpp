@@ -49,6 +49,16 @@ int main(int argc, char* argv[])
     Sprite poisons;
     SDL_Texture* poisonTexture=graphics.loadTexture(POISON_SPRITE_FILE);
     Sprite poisonimpact;
+    Sprite laser;
+    SDL_Texture* laserTexture=graphics.loadTexture(LASER_SPRITE_FILE);
+    laser.init(laserTexture,6,LASER_CLIPS);
+    Sprite asteroid;
+    Sprite asteroid2;
+    Sprite asteroid3;
+    SDL_Texture* asteroidTexture=graphics.loadTexture(ASTEROID_SPRITE_FILE);
+    asteroid.init(asteroidTexture,3,ASTEROID_CLIPS);
+    asteroid2.init(asteroidTexture,3,ASTEROID_CLIPS);
+    asteroid3.init(asteroidTexture,3,ASTEROID_CLIPS);
     SDL_Texture* poisonimpactTexture=graphics.loadTexture(POISONIMPACT_SPRITE_FILE);
     SDL_Texture *start=graphics.loadTexture("images\\start.png");
     SDL_Texture *gameover=graphics.loadTexture("images\\gameover1.png");
@@ -82,6 +92,15 @@ int main(int argc, char* argv[])
     poi.x=-150;
     poi.y=570;
     poi.speed=4;
+    Mouse as1;
+    as1.x=350;
+    as1.y=-70;
+    Mouse as2;
+    as2.x=50;
+    as2.y=-150;
+    Mouse as3;
+    as3.x=500;
+    as3.y=-200;
 
     int jumptimes=3;
     bool quit = false;
@@ -102,9 +121,16 @@ int main(int argc, char* argv[])
         if(frame==1200) frame=0;
 
         background1(graphics,layer1,layer2,layer3,lights1,layer4,layer5,lights2);
-        crabMove(graphics,crab,boss2,frame);
-        background2(graphics,layer6,layer7,layer8,layer9);
+        crabMove(graphics,crab,boss2,laser,frame);
+
+        background2(graphics,layer6,layer8,layer9);
+        background3(graphics,layer7);
+
+        asteroidMove(graphics,asteroid,asteroid2,asteroid3,as1,as2,as3,frame);
+
+
         //va cham
+
 
         if(isCollisionwithmonster(man.x+90,man.y+70,45,70,bat.x+15,bat.y+5,40,30)||isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29))
         {
@@ -195,8 +221,8 @@ int main(int argc, char* argv[])
         //
           //monster
         frogMove(graphics,frog,man,poi,boss1,poisonattack,poisons,poisonimpact,boss1Texture,boss1_2Texture,poisonattackTexture,poisonTexture,poisonimpactTexture,frame,biteframecount,over,poison);
-        rhinoMove(graphics,monster,frog,rhino,poisonimpact,rhinoTexture,rhinohitTexture,disappearcount,poi,frame,collision4);
-        batMove(graphics,batman,bat,frog,batTexture,bat2Texture,disappearcount2);
+        rhinoMove(graphics,monster,frog,rhino,poisonimpact,rhinoTexture,rhinohitTexture,disappearcount,poi,frame,collision4,as1,as2,as3);
+        batMove(graphics,batman,bat,frog,batTexture,bat2Texture,disappearcount2,as1,as2,as3);
         //
         //xu li nhay nhan vat
         if(jumptimes<=0) man.isJumping=true;
@@ -210,20 +236,21 @@ int main(int argc, char* argv[])
         else if(man.y<=350) man.height=10;
         else if(man.y<=470) man.height=30;
         else man.height=40;
-        //
         //hitbox
-        //graphics.drawRect(man.x+90,man.y+80,45,60);
-        //graphics.drawRect(monster.x,monster.y+6,105,65);
-        //graphics.drawRect(frog.x+100,frog.y+80,200,150);
-        //graphics.drawRect(bat.x+15,bat.y+5,40,30);
-        //graphics.drawRect(poi.x,poi.y+1,84,29);
-        //graphics.drawRect(crab.x+35,crab.y+5,155,215);
+        graphics.drawRect(man.x+90,man.y+80,45,60);
+        graphics.drawRect(monster.x,monster.y+6,105,65);
+        graphics.drawRect(frog.x+100,frog.y+80,200,150);
+        graphics.drawRect(bat.x+15,bat.y+5,40,30);
+        graphics.drawRect(poi.x,poi.y+1,84,29);
+        graphics.drawRect(as1.x+9,as1.y+5,41,41);
+        graphics.drawRect(as2.x+9,as2.y+5,41,41);
+        graphics.drawRect(as3.x+9,as3.y+5,41,41);
         //
         run.tick();
         man.move();
         man.x-=4;
         graphics.presentScene();
-        SDL_Delay(40);
+        SDL_Delay(30);
     }
 
 
