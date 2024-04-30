@@ -24,6 +24,19 @@ const char* POISON_SPRITE_FILE = "images\\poison-spit.png";
 const char* POISONIMPACT_SPRITE_FILE = "images\\poison-impact.png";
 const char* LASER_SPRITE_FILE = "images\\laser.png";
 const char* ASTEROID_SPRITE_FILE = "images\\asteroid.png";
+const char* IDLE_SPRITE_FILE = "images\\Idle.png";
+const int IDLE_CLIPS[][4] = {
+     {0,0,220,220},
+    {220,0,220,220},
+    {440,0,220,220},
+    {660,0,220,220},
+    {880,0,220,220},
+    {1100,0,220,220},
+    {1320,0,220,220},
+    {1540,0,220,220}
+};
+
+
 const int ASTEROID_CLIPS[][4] = {
     {50,0,50,50},
     {0,0,50,50},

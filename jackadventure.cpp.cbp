@@ -14,10 +14,13 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="D:/SDL2_mixer-2.8.0/x86_64-w64-mingw32/include/SDL2" />
+					<Add directory="D:/SDL2_ttf-devel-2.22.0-mingw/SDL2_ttf-2.22.0/x86_64-w64-mingw32/include/SDL2" />
 				</Compiler>
 				<Linker>
 					<Add option="-lSDL2_mixer" />
+					<Add option="-lSDL2_ttf" />
 					<Add directory="D:/SDL2_mixer-2.8.0/x86_64-w64-mingw32/lib" />
+					<Add directory="D:/SDL2_ttf-devel-2.22.0-mingw/SDL2_ttf-2.22.0/x86_64-w64-mingw32/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -36,6 +39,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Initalize.h" />
 		<Unit filename="background.h" />
 		<Unit filename="defs.h" />
 		<Unit filename="graphics.h" />

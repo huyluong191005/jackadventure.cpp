@@ -21,7 +21,7 @@ void backtexture(Graphics &graphics,ScrollingBackground &layer1,ScrollingBackgro
 
 void background1(Graphics &graphics,ScrollingBackground &layer1,ScrollingBackground &layer2,ScrollingBackground &layer3,ScrollingBackground &lights1,ScrollingBackground &layer4,ScrollingBackground &layer5,ScrollingBackground &lights2)
 {
-    layer1.scroll(0);
+        layer1.scroll(0);
         graphics.render(layer1);
         layer2.scroll(2);
         graphics.render(layer2);
@@ -29,9 +29,9 @@ void background1(Graphics &graphics,ScrollingBackground &layer1,ScrollingBackgro
         graphics.render(layer3);
         lights1.scroll(3);
         graphics.render(lights1);
-        layer4.scroll(3);
+        layer4.scroll(4);
         graphics.render(layer4);
-        layer5.scroll(4);
+        layer5.scroll(5);
         graphics.render(layer5);
         lights2.scroll(3);
         graphics.render(lights2);
