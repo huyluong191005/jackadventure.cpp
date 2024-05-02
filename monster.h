@@ -5,8 +5,9 @@
 #include "defs.h"
 #include "graphics.h"
 #include "moving.h"
+#include "music.h"
 
-void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1,Sprite& poisonattack,Sprite &poisons,Sprite &poisonimpact,SDL_Texture* boss1Texture,SDL_Texture* boss1_2Texture,SDL_Texture *poisonattackTexture,SDL_Texture *poisonTexture,SDL_Texture* poisonimpactTexture,int &frame,int &biteframecount,bool &over,bool &poison )
+void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1,Sprite& poisonattack,Sprite &poisons,Sprite &poisonimpact,SDL_Texture* boss1Texture,SDL_Texture* boss1_2Texture,SDL_Texture *poisonattackTexture,SDL_Texture *poisonTexture,SDL_Texture* poisonimpactTexture,int &frame,int &biteframecount,bool &over,bool &poison,Mix_Chunk*frogGrunt,Mix_Chunk*frogGrunt2)
 {
     poisonattack.init(poisonattackTexture,17,POISONATTACK_CLIPS);
     poisons.init(poisonTexture,12,POISON_CLIPS);
@@ -17,10 +18,12 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
     frog.speed=2;
         if(frame>=100&&frame<=122||frame>=300&&frame<=322||frame>=500&&frame<=522||frame>=700&&frame<=722||frame>=900&&frame<=922||frame>=1100&&frame<=1122)
         {
+            if(frame==100||frame==300||frame==500||frame==700||frame==900||frame==1100) play(frogGrunt);
 
         if(frame==118||frame==318||frame==518||frame==718||frame==918||frame==1118) poi.x=frog.x+250;
 
             graphics.render2(frog.x+110,frog.y+95,poisonattack);
+
 
         }
          else {
@@ -40,6 +43,7 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
             frog.x+=(4*frog.speed);
             if(frog.x+160>man.x) {
                     biteframecount++;
+                    if(biteframecount==1) play(frogGrunt2);
                     man.x=frog.x+120;
                     man.y=frog.y+50;
                     if(biteframecount%15==0) over=true;
@@ -71,9 +75,8 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
         if(frame%17>=7) frog.x+=frog.speed;
         //
 }
-void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,Sprite &poisonimpact,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount,Mouse &poi,int &frame,bool &collision4,Mouse&as1,Mouse&as2,Mouse&as3)
+void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,Sprite &poisonimpact,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount,Mouse &poi,int &frame,bool &collision4,Mouse&as1,Mouse&as2,Mouse&as3,Mix_Chunk*poisonImpact)
 {
-
     if(monster.speed!=0)
         {
             rhino.init(rhinoTexture,6,RHINO_CLIPS);
@@ -81,6 +84,7 @@ void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,Sprit
     if(monster.speed==0)
         {
             disappearcount++;
+            if(disappearcount==1&&collision4)play(poisonImpact);
             if(disappearcount<=16){
             if(disappearcount<=12&&collision4)
             {
@@ -94,7 +98,7 @@ void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,Sprit
             collision4=0;
             poi.x=3000;
             monster.x=800+(rand()%300);
-            monster.speed=4;
+            monster.speed=5;
             disappearcount=0;
         }
         }
@@ -142,10 +146,12 @@ void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Textur
         graphics.render2(bat.x,bat.y,batman);
         batman.tick();
 }
-void crabMove(Graphics &graphics,Mouse &crab,Sprite &boss2,Sprite &laser,int &frame)
+void crabMove(Graphics &graphics,Mouse &crab,Sprite &boss2,Sprite &laser,int &frame,Mix_Chunk*gLaser,Mix_Chunk*crabgrunting,Mix_Chunk*dropBomb)
 {
+    if(frame==300) play(crabgrunting);
     if(frame==500)
         {
+
             if(crab.x<=0)
             {
                 crab.x=-200;
@@ -174,33 +180,38 @@ void crabMove(Graphics &graphics,Mouse &crab,Sprite &boss2,Sprite &laser,int &fr
         if(frame>=630&&frame<=642||frame>=770&&frame<=782||frame>=910&&frame<=922)
         {
             graphics.render2(355,-40,laser);
+            play(gLaser);
+            play(dropBomb);
         }
+
        laser.tick();
 
 }
-void asteroidMove(Graphics &graphics,Sprite &asteroid,Sprite &asteroid2,Sprite &asteroid3,Mouse &as1,Mouse &as2,Mouse &as3,int &frame)
+void asteroidMove(Graphics &graphics,Sprite &asteroid,Mouse &as1,Mouse &as2,Mouse &as3,int &frame,Mix_Chunk*deathFlash)
 {
     if(frame>=640&&frame<=775||frame>=780&&frame<=915||frame>=920&&frame<=1055){
-           graphics.render2(as1.x,as1.y,asteroid);
-        graphics.render2(as2.x,as2.y,asteroid2);
-        graphics.render2(as3.x,as3.y,asteroid3);
+        graphics.render2(as1.x,as1.y,asteroid);
+        graphics.render2(as2.x,as2.y,asteroid);
+        graphics.render2(as3.x,as3.y,asteroid);
+
         as1.x+=2;as1.y+=6;as2.x+=2;as2.y+=6;as3.x+=2;as3.y+=6;
 
         asteroid.tick();
-        asteroid2.tick();
-        asteroid3.tick();
          if(as1.y>=570)
         {
+            play(deathFlash);
             as1.x=350;
             as1.y=-1000;
         }
         if(as2.y>=570)
         {
+            play(deathFlash);
             as2.x=50;
             as2.y=-1000;
         }
             if(as3.y>=570)
         {
+            play(deathFlash);
             as3.x=500;
             as3.y=-1000;
         }

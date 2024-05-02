@@ -5,6 +5,7 @@
 const int SCREEN_WIDTH = 811 ;
 const int SCREEN_HEIGHT = 693;
 const int safeDistance=200;
+const int maxVolume=128;
 const char* WINDOW_TITLE = "JACK97";
 const int GRAVITY =9;
 const int ACC=1;

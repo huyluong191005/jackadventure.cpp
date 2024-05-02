@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1714494621 source:d:\jackadventure.cpp\main.cpp
+1714665129 source:d:\jackadventure.cpp\main.cpp
 	"defs.h"
 	"graphics.h"
 	"moving.h"
@@ -8,7 +8,7 @@
 	"music.h"
 	<string>
 
-1714370047 d:\jackadventure.cpp\defs.h
+1714622209 d:\jackadventure.cpp\defs.h
 
 1714493575 d:\jackadventure.cpp\graphics.h
 	<SDL.h>
@@ -29,11 +29,12 @@
 	"graphics.h"
 	"defs.h"
 
-1714319700 d:\jackadventure.cpp\monster.h
+1714665197 d:\jackadventure.cpp\monster.h
 	"background.h"
 	"defs.h"
 	"graphics.h"
 	"moving.h"
+	"music.h"
 
 1705857752 d:\sdl2_mixer-2.8.0\x86_64-w64-mingw32\include\sdl2\sdl_mixer.h
 	"SDL_stdinc.h"
