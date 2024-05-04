@@ -41,12 +41,15 @@
 		</Compiler>
 		<Unit filename="Initalize.h" />
 		<Unit filename="background.h" />
+		<Unit filename="button.h" />
 		<Unit filename="defs.h" />
 		<Unit filename="graphics.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="monster.h" />
 		<Unit filename="moving.h" />
 		<Unit filename="music.h" />
+		<Unit filename="player.h" />
+		<Unit filename="startnoverpage.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

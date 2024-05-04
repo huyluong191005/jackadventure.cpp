@@ -1,12 +1,13 @@
 # depslib dependency file v1.0
-1714665129 source:d:\jackadventure.cpp\main.cpp
+1714800966 source:d:\jackadventure.cpp\main.cpp
 	"defs.h"
 	"graphics.h"
 	"moving.h"
 	"background.h"
 	"monster.h"
 	"music.h"
-	<string>
+	"Initalize.h"
+	"startnoverpage.h"
 
 1714622209 d:\jackadventure.cpp\defs.h
 
@@ -29,7 +30,7 @@
 	"graphics.h"
 	"defs.h"
 
-1714665197 d:\jackadventure.cpp\monster.h
+1714800966 d:\jackadventure.cpp\monster.h
 	"background.h"
 	"defs.h"
 	"graphics.h"
@@ -52,4 +53,12 @@
 	"SDL.h"
 	"begin_code.h"
 	"close_code.h"
+
+1714752554 d:\jackadventure.cpp\initalize.h
+
+1714803301 d:\jackadventure.cpp\button.h
+	<string>
+
+1714800171 d:\jackadventure.cpp\startnoverpage.h
+	"button.h"
 

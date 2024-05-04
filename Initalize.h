@@ -1,10 +1,13 @@
-void resetData(Mouse &man,Mouse &frog,Mouse &monster,Mouse &bat,Mouse &crab,Mouse &poi,Mouse &as1,Mouse &as2,Mouse &as3,int &frame,bool &poison,bool &collision,bool &collision2,bool &collision3,bool &collision4,int &biteframecount,int &disappearcount,int &disappearcount2,bool &over,int&counttodeath,int&jumptimes,bool &quit)
+#ifndef _INITALIZE__H
+#define _INITALIZE__H
+
+void resetData(Mouse &man,Mouse &frog,Mouse &monster,Mouse &bat,Mouse &crab,Mouse &poi,Mouse &as1,Mouse &as2,Mouse &as3,int &frame,bool &poison,bool &collision2,bool &collision3,bool &collision4,int &biteframecount,int &disappearcount,int &disappearcount2,bool &over,int&counttodeath,int&jumptimes,bool &quit)
 {
       man.x=300;
     man.y=225;
     man.isJumping=true;
     man.isFreefalling=false;
-    man.speed=11;
+    man.speed=14;
     frog.x=-350;
     frog.y=410;
     frog.speed=2;
@@ -28,7 +31,7 @@ void resetData(Mouse &man,Mouse &frog,Mouse &monster,Mouse &bat,Mouse &crab,Mous
     as3.y=-200;
      frame=0;
      poison=(0);
-     collision=(0);collision2=(0);collision3=(0);collision4=(0);
+     collision2=(0);collision3=(0);collision4=(0);
      biteframecount=(0);
      disappearcount=(0);
      disappearcount2=(0);
@@ -38,3 +41,4 @@ void resetData(Mouse &man,Mouse &frog,Mouse &monster,Mouse &bat,Mouse &crab,Mous
      quit=false;
 
 }
+#endif

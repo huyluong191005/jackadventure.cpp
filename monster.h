@@ -226,4 +226,14 @@ void asteroidMove(Graphics &graphics,Sprite &asteroid,Mouse &as1,Mouse &as2,Mous
             as3.y=-200;
         }
 }
+   //hitbox
+        //graphics.drawRect(man.x+90,man.y+80,45,60);
+        //graphics.drawRect(monster.x,monster.y+6,105,65);
+        //graphics.drawRect(frog.x+100,frog.y+80,200,150);
+        //graphics.drawRect(bat.x+15,bat.y+5,40,30);
+        //graphics.drawRect(poi.x,poi.y+1,84,29);
+        //graphics.drawRect(as1.x+9,as1.y+5,41,41);
+        //graphics.drawRect(as2.x+9,as2.y+5,41,41);
+        //graphics.drawRect(as3.x+9,as3.y+5,41,41);
+        //
 #endif
