@@ -87,9 +87,10 @@ int main(int argc, char* argv[])
     Mix_Chunk *frogGrunt = loadSound("sounds\\Large Monster Grunt Hit 02.wav");
     Mix_Chunk *frogGrunt2 = loadSound("sounds\\monster-5.wav");
 
-    TTF_Font* font = graphics.loadFont("font\\ka1.ttf", 31);
+    TTF_Font* font = graphics.loadFont("font\\youmurdererbb_reg.ttf", 81);
 
-    char  score[]="0";
+    char  score[20];
+    char  bScore[20];
     Mouse man; man.x=300; man.y=225; man.isJumping=true; man.isFreefalling=false; man.speed=14;
     Mouse frog; frog.x=-350; frog.y=410; frog.speed=2;
     Mouse monster; monster.x=900; monster.y=570; monster.speed=5;
@@ -119,7 +120,8 @@ int main(int argc, char* argv[])
     bool settings=false;
     bool soundOn=true;
     bool musicOn=true;
-
+    bool leaderboard=false;
+    int highScore[5];
 
     SDL_Event e;
     while(!quit||game)
@@ -128,8 +130,12 @@ int main(int argc, char* argv[])
 
         if(!startgame)
         {
-            handleEvents(quit,startgame,game,helb,settings,soundOn,musicOn,click);
-            startPage(graphics,man,back1,start,adventuretime,setting,highscore,help,close,idle,helpTexture,settingbar,sound,soundon,soundoff,music,musicon,musicoff,closePage,helb,settings,soundOn,musicOn);
+            ifstream file1;
+            file1.open("highscore.txt");
+            for(int i=0;i<5;i++) file1>>highScore[i];
+            file1.close();
+            handleEvents(quit,startgame,game,helb,settings,soundOn,musicOn,leaderboard,click);
+            startPage(graphics,man,back1,start,adventuretime,setting,highscore,help,close,idle,helpTexture,settingbar,sound,soundon,soundoff,music,musicon,musicoff,closePage,helb,settings,soundOn,musicOn,leaderboard,highScore);
         }
         else{
         int scores1=0;
@@ -139,6 +145,30 @@ int main(int argc, char* argv[])
     while( !quit ) {
         if(over)
         {
+
+            ifstream file1;
+            file1.open("highscore.txt");
+            for(int i=0;i<5;i++) file1>>highScore[i];
+            if(scores>highScore[4])
+            {
+                highScore[4]=scores;
+                for(int i=0;i<5;i++)
+                {
+                    for(int j=0;j<5;j++)
+                    {
+                        if(highScore[i]>highScore[j]) swap(highScore[i],highScore[j]);
+                    }
+                }
+            }
+            file1.close();
+            ofstream file2;
+            file2.open("highscore.txt");
+            for(int i=0;i<5;i++) file2<<highScore[i]<<" ";
+            file2.close();
+            intToCharArray(highScore[0],bScore);
+            SDL_Color color = {0, 255, 0, 0};
+            SDL_Texture* bscoreText = graphics.renderText(bScore, font, color);
+            graphics.renderTexture(bscoreText, 530,420);
             overPage(graphics,gameover,restart,home,score,font);
             handleEvents2(quit,startgame,game,click);
         }
@@ -151,10 +181,8 @@ int main(int argc, char* argv[])
                 game=false;
             }
         }
-
         frame++;//tinh so frame
         scores1++;
-
         if(frame==1500) frame=0;
         scores=scores1/5;
         intToCharArray(scores,score);
@@ -167,61 +195,24 @@ int main(int argc, char* argv[])
         background3(graphics,layer7);
         asteroidMove(graphics,asteroid,as1,as2,as3,frame,deathFlash);
 
-        //va cham
+        //player
+        const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
         playerCollision(graphics,man,bat,as1,as2,as3,monster,poi,collision2,collision3,counttodealth,fall1,gDeath,poisonImpact,death,poisonimpact,over);
-
-        //xu li chuyen dong bang mui ten
-         const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-        if(!over&&(!currentKeyStates[SDL_SCANCODE_UP])&&!man.isFreefalling&&!collision2&&!collision3)
-        {
-            graphics.render2(man.x,man.y,run);
-            run.tick();
-        }
-        if (currentKeyStates[SDL_SCANCODE_UP]&&!man.isJumping&&!collision2&&!collision3)
-        {
-            if(jumptimes==6) play(gJump);graphics.render2(man.x,man.y,jump);
-            jump.tick();
-            man.makeAjump();
-            jumptimes--;
-        }else{
-            man.freeFall();
-            if(currentKeyStates[SDL_SCANCODE_RIGHT]&&man.isFreefalling&&!collision2&&!collision3)
-        {
-            graphics.renderTexture(fall2,man.x,man.y);
-        }
-            else if(man.isFreefalling&&man.y<510&&!collision2&&!collision3)
-            {
-              graphics.renderTexture(fall1,man.x,man.y);
-            }
-        }
-        if(currentKeyStates[SDL_SCANCODE_RIGHT]&&!collision2&&!collision3)
-        {
-            man.run();
-        }
-        if(currentKeyStates[SDL_SCANCODE_LEFT]&&!collision2&&!collision3)
-        {
-            man.runback();
-        }
-        if(currentKeyStates[SDL_SCANCODE_DOWN]&&man.y<=495&&!collision2&&!collision3)
-        {
-            man.fallDown();
-        }
+        playerMove(graphics,currentKeyStates,over,man,collision2,collision3,run,jumptimes,gJump,jump,fall1,fall2);
+        playerJump(graphics,man,jumptimes,falltimes,gFall);
         //
           //monster
         frogMove(graphics,frog,man,poi,boss1,poisonattack,poisons,poisonimpact,boss1Texture,boss1_2Texture,poisonattackTexture,poisonTexture,poisonimpactTexture,frame,biteframecount,over,poison,frogGrunt,frogGrunt2);
         rhinoMove(graphics,monster,frog,rhino,poisonimpact,rhinoTexture,rhinohitTexture,disappearcount,poi,frame,collision4,as1,as2,as3,poisonImpact);
         batMove(graphics,batman,bat,frog,batTexture,bat2Texture,disappearcount2,as1,as2,as3);
         //
-        //xu li nhay nhan vat
-        manJump(graphics,man,jumptimes,falltimes,gFall);
 
         if(!over) graphics.renderTexture(scoreText, 0,0);
         graphics.presentScene();
-        SDL_Delay(30);
+        SDL_Delay(35);
         }
             }
         }
-
     }
 
     destroybackground(graphics,layer1,layer2,layer3,lights1,layer4,layer5,lights2,layer6,layer7,layer8,layer9);
@@ -232,6 +223,6 @@ int main(int argc, char* argv[])
     SDL_DestroyTexture( rhinoTexture ); rhinoTexture = nullptr;
     SDL_DestroyTexture( start); start = nullptr;
     graphics.quit();
-
+    for(int i=0;i<5;i++) cout<<highScore[i]<<" ";
     return 0;
 }

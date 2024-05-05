@@ -2,7 +2,7 @@
 #define _BUTTON_H
 #include <string>
 using namespace std;
-void handleEvents(bool& quit, bool& startGame,bool &game,bool &helb,bool &settings,bool &soundOn,bool &musicOn,Mix_Chunk *click) {
+void handleEvents(bool& quit, bool& startGame,bool &game,bool &helb,bool &settings,bool &soundOn,bool &musicOn,bool &leaderboard,Mix_Chunk *click) {
     SDL_Event e;
     while (SDL_PollEvent(&e) != 0) {
         if (e.type == SDL_QUIT) {
@@ -12,28 +12,27 @@ void handleEvents(bool& quit, bool& startGame,bool &game,bool &helb,bool &settin
             int mouseX, mouseY;
             SDL_GetMouseState(&mouseX, &mouseY);
             // Check if "Play" button is clicked
-            if (mouseX >= 350 && mouseX <= 465 && mouseY >= 350 && mouseY <= 465&&!helb&&!settings) {
+            if (mouseX >= 350 && mouseX <= 465 && mouseY >= 350 && mouseY <= 465&&!helb&&!settings&&!leaderboard) {
                 startGame = true;
                 play(click);
             }
-            else if(mouseX>=490&&mouseX<=559&&mouseY>=465&&mouseY<=534&&!helb&&!settings)
+            else if(mouseX>=490&&mouseX<=559&&mouseY>=465&&mouseY<=534&&!helb&&!settings&&!leaderboard)
             {
                 quit = true;
                 game=false;
                 play(click);
             }
-            else if(mouseX>=410&&mouseX<=479&&mouseY>=465&&mouseY<=534&&!helb&&!settings)
+            else if(mouseX>=410&&mouseX<=479&&mouseY>=465&&mouseY<=534&&!helb&&!settings&&!leaderboard)
             {
                 helb=true;
                 play(click);
             }
-             else if((mouseX-752)*(mouseX-752)+(mouseY-70)*(mouseY-70)<=50*50)
+            else if(mouseX>=330&&mouseX<=399&&mouseY>=465&&mouseY<=534&&!helb&&!settings&&!leaderboard)
             {
-                helb=false;
-                settings=false;
+                leaderboard=true;
                 play(click);
             }
-             else if(mouseX>=250&&mouseX<=319&&mouseY>=465&&mouseY<=534&&!helb&&!settings)
+             else if(mouseX>=250&&mouseX<=319&&mouseY>=465&&mouseY<=534&&!helb&&!settings&&!leaderboard)
             {
                 settings=true;
                 play(click);
@@ -47,6 +46,13 @@ void handleEvents(bool& quit, bool& startGame,bool &game,bool &helb,bool &settin
             {
                musicOn=!musicOn;
                play(click);
+            }
+              else if((mouseX-752)*(mouseX-752)+(mouseY-70)*(mouseY-70)<=50*50)
+            {
+                helb=false;
+                settings=false;
+                leaderboard=false;
+                play(click);
             }
 
 

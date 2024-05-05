@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 #include "defs.h"
 #include <vector>
+#include <fstream>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 

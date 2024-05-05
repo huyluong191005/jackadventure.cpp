@@ -61,7 +61,7 @@ void playerCollision(Graphics graphics,Mouse &man,Mouse &bat,Mouse &as1,Mouse &a
         }
 
 }
-void manJump(Graphics &graphics,Mouse &man,int &jumptimes,int &falltimes,Mix_Chunk*gFall)
+void playerJump(Graphics &graphics,Mouse &man,int &jumptimes,int &falltimes,Mix_Chunk*gFall)
 {
      if(jumptimes<=0) man.isJumping=true;
         else if(jumptimes>0) man.isJumping=false;
@@ -82,5 +82,41 @@ void manJump(Graphics &graphics,Mouse &man,int &jumptimes,int &falltimes,Mix_Chu
         man.move();
         man.x-=4;
 }
-
+void playerMove(Graphics &graphics,const Uint8* currentKeyStates,bool &over,Mouse &man,bool &collision2,bool &collision3,Sprite &run,int&jumptimes,Mix_Chunk*gJump,Sprite&jump,SDL_Texture*fall1,SDL_Texture*fall2)
+{
+        if(!over&&(!currentKeyStates[SDL_SCANCODE_UP])&&!man.isFreefalling&&!collision2&&!collision3)
+        {
+            graphics.render2(man.x,man.y,run);
+            run.tick();
+        }
+        if (currentKeyStates[SDL_SCANCODE_UP]&&!man.isJumping&&!collision2&&!collision3)
+        {
+            if(jumptimes==6) play(gJump);graphics.render2(man.x,man.y,jump);
+            jump.tick();
+            man.makeAjump();
+            jumptimes--;
+        }else{
+            man.freeFall();
+            if(currentKeyStates[SDL_SCANCODE_RIGHT]&&man.isFreefalling&&!collision2&&!collision3)
+        {
+            graphics.renderTexture(fall2,man.x,man.y);
+        }
+            else if(man.isFreefalling&&man.y<510&&!collision2&&!collision3)
+            {
+              graphics.renderTexture(fall1,man.x,man.y);
+            }
+        }
+        if(currentKeyStates[SDL_SCANCODE_RIGHT]&&!collision2&&!collision3)
+        {
+            man.run();
+        }
+        if(currentKeyStates[SDL_SCANCODE_LEFT]&&!collision2&&!collision3)
+        {
+            man.runback();
+        }
+        if(currentKeyStates[SDL_SCANCODE_DOWN]&&man.y<=495&&!collision2&&!collision3)
+        {
+            man.fallDown();
+        }
+}
 #endif
