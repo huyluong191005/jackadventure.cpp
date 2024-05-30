@@ -1,17 +1,18 @@
 # depslib dependency file v1.0
-1714914659 source:d:\jackadventure.cpp\main.cpp
+1715599486 source:d:\jackadventure.cpp\main.cpp
 	"defs.h"
 	"graphics.h"
 	"background.h"
+	"bullet.h"
 	"monster.h"
 	"music.h"
 	"Initalize.h"
 	"startnoverpage.h"
 	"player.h"
 
-1714622209 d:\jackadventure.cpp\defs.h
+1715598654 d:\jackadventure.cpp\defs.h
 
-1714903564 d:\jackadventure.cpp\graphics.h
+1715101523 d:\jackadventure.cpp\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	"defs.h"
@@ -21,17 +22,17 @@
 	<SDL_ttf.h>
 	<bits/stdc++.h>
 
-1714036702 d:\jackadventure.cpp\moving.h
+1715405358 d:\jackadventure.cpp\moving.h
 	<SDL.h>
 	<SDL_image.h>
 	"defs.h"
 	"graphics.h"
 
-1714331127 d:\jackadventure.cpp\background.h
+1715273646 d:\jackadventure.cpp\background.h
 	"graphics.h"
 	"defs.h"
 
-1714825794 d:\jackadventure.cpp\monster.h
+1715275596 d:\jackadventure.cpp\monster.h
 	"background.h"
 	"defs.h"
 	"graphics.h"
@@ -47,7 +48,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1714075180 d:\jackadventure.cpp\music.h
+1715101744 d:\jackadventure.cpp\music.h
 	"graphics.h"
 
 1705848875 d:\sdl2_ttf-devel-2.22.0-mingw\sdl2_ttf-2.22.0\x86_64-w64-mingw32\include\sdl2\sdl_ttf.h
@@ -57,12 +58,14 @@
 
 1714812751 d:\jackadventure.cpp\initalize.h
 
-1714914160 d:\jackadventure.cpp\button.h
+1714923437 d:\jackadventure.cpp\button.h
 	<string>
 
-1714914780 d:\jackadventure.cpp\startnoverpage.h
+1715100695 d:\jackadventure.cpp\startnoverpage.h
 	"button.h"
 
-1714824765 d:\jackadventure.cpp\player.h
+1715756063 d:\jackadventure.cpp\player.h
 	"moving.h"
+
+1714988855 d:\jackadventure.cpp\bullet.h
 

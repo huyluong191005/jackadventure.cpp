@@ -31,7 +31,7 @@ struct Mouse {
          isFreefalling=false;}
          else isFreefalling=true;
     }
-    void run()
+    void run(int &delta)
     {
         dx=speed;
 
@@ -73,15 +73,4 @@ bool isCollisionwithmonster(int x1,int y1,int manwidth,int manheight,int x2,int 
 
 
 }
-
-
-
-bool gameOver(Mouse man,Mouse frog) {
-    if((frog.x+130)>=(man.x))
-    {
-        return true;
-    }
-    return false;
-}
-
 #endif

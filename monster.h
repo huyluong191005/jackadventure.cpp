@@ -2,6 +2,7 @@
 #ifndef _MONSTER __H
 #define _MONSTER__H
 #include "background.h"
+
 #include "defs.h"
 #include "graphics.h"
 #include "moving.h"
@@ -12,8 +13,6 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
     poisonattack.init(poisonattackTexture,17,POISONATTACK_CLIPS);
     poisons.init(poisonTexture,12,POISON_CLIPS);
     poisonimpact.init(poisonimpactTexture,12,POISONIMPACT_CLIPS);
-
-    if(isCollisionwithmonster(man.x+90,man.y+80,45,60,poi.x,poi.y+1,84,29)) poi.x=3000;
 
     frog.speed=2;
         if(frame>=100&&frame<=122||frame>=300&&frame<=322||frame>=500&&frame<=522||frame>=700&&frame<=722||frame>=900&&frame<=922||frame>=1100&&frame<=1122)
@@ -75,46 +74,56 @@ void frogMove(Graphics &graphics,Mouse &frog,Mouse &man,Mouse &poi,Sprite &boss1
         if(frame%17>=7) frog.x+=frog.speed;
         //
 }
-void rhinoMove(Graphics &graphics,Mouse &monster,Mouse &frog,Sprite &rhino,Sprite &poisonimpact,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount,Mouse &poi,int &frame,bool &collision4,Mouse&as1,Mouse&as2,Mouse&as3,Mix_Chunk*poisonImpact)
+void rhinoMove(Graphics &graphics,int &delta,Mouse &monster,Mouse &frog,Bullet &b1,Sprite &rhino,Sprite &poisonimpact,Sprite &arrowImpact,SDL_Texture* rhinoTexture,SDL_Texture* rhinohitTexture,int & disappearcount,Mouse &poi,int &frame,bool &collision4,bool &collision,Mouse&as1,Mouse&as2,Mouse&as3,Mix_Chunk*poisonImpact)
 {
-    if(monster.speed!=0)
-        {
-            rhino.init(rhinoTexture,6,RHINO_CLIPS);
-        }
     if(monster.speed==0)
         {
             disappearcount++;
             if(disappearcount==1&&collision4)play(poisonImpact);
-            if(disappearcount<=16){
+            if(disappearcount<=12){
             if(disappearcount<=12&&collision4)
             {
                 graphics.render2(monster.x-15,545,poisonimpact);
                 monster.x+=5;
             }
+            if(disappearcount<=10&&collision)
+            {
+                graphics.render2(monster.x-28,b1.y+80,arrowImpact);
+            }
             rhino.init(rhinohitTexture,5,RHINOHIT_CLIPS);
         }
         else
         {
+            rhino.init(rhinoTexture,6,RHINO_CLIPS);
             collision4=0;
-            poi.x=3000;
+            collision=0;
             monster.x=800+(rand()%300);
-            monster.speed=5;
+            monster.speed=5+delta;
             disappearcount=0;
         }
         }
-        if(frog.x+250>=monster.x||isCollisionwithmonster(monster.x,monster.y+6,105,65,poi.x,poi.y+1,84,29)||isCollisionwithmonster(monster.x,monster.y+6,105,65,as1.x+9,as1.y+5,41,41)||isCollisionwithmonster(monster.x,monster.y+6,105,65,as2.x+9,as2.y+5,41,41)||isCollisionwithmonster(monster.x,monster.y+6,105,65,as3.x+9,as3.y+5,41,41))
+        if(frog.x+250>=monster.x||isCollisionwithmonster(monster.x,monster.y+6,105,65,b1.x+57,b1.y+86,45,7)||isCollisionwithmonster(monster.x,monster.y+6,105,65,poi.x,poi.y+1,84,29)||isCollisionwithmonster(monster.x,monster.y+6,105,65,as1.x+9,as1.y+5,41,41)||isCollisionwithmonster(monster.x,monster.y+6,105,65,as2.x+9,as2.y+5,41,41)||isCollisionwithmonster(monster.x,monster.y+6,105,65,as3.x+9,as3.y+5,41,41))
         {
-            if(isCollisionwithmonster(monster.x,monster.y+6,105,65,poi.x,poi.y+1,84,29)) collision4=true;
+            if(isCollisionwithmonster(monster.x,monster.y+6,105,65,poi.x,poi.y+1,84,29))
+            {
+                collision4=true;
+                poi.x=3000;
+            }
+            if(isCollisionwithmonster(monster.x,monster.y+6,105,65,b1.x+57,b1.y+86,45,7))
+            {
+                collision=true;
+                b1.x=3000;
+            }
             monster.speed=0;
-            poi.x=3000;
+
         }
         monster.x-=monster.speed;
-
+        arrowImpact.tick();
         rhino.tick();
 
         graphics.render2(monster.x,monster.y,rhino);
 }
-void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Texture *batTexture,SDL_Texture *bat2Texture,int &disappearcount2,Mouse&as1,Mouse&as2,Mouse&as3)
+void batMove(Graphics &graphics,int &delta,Sprite &batman,Sprite &arrowImpact,Mouse &bat,Mouse &frog,SDL_Texture *batTexture,SDL_Texture *bat2Texture,int &disappearcount2,Mouse&as1,Mouse&as2,Mouse&as3,Bullet &b1,bool &collision)
 {
          if(bat.speed!=0)
         {
@@ -122,14 +131,20 @@ void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Textur
         }
         else {
              disappearcount2++;
-            if(disappearcount2<=20){
+             if(disappearcount2<=10&&collision)
+            {
+                graphics.render2(bat.x-15,b1.y+80,arrowImpact);
+            }
+            if(disappearcount2<=15){
                     batman.init(bat2Texture,5,BAT2_CLIPS);
             }
+
             else{
                  bat.x=1000+(rand()%500);
                  bat.y=400+(rand()%150);
                  disappearcount2=0;
-                 bat.speed=7;
+                 bat.speed=7+delta;
+                 collision=0;
             }
         }
 
@@ -138,9 +153,15 @@ void batMove(Graphics &graphics,Sprite &batman,Mouse &bat,Mouse &frog,SDL_Textur
             bat.x=1000+(rand()%500);
             bat.y=400+(rand()%100);
         }
-        if(isCollisionwithmonster(frog.x+100,frog.y+80,200,150,bat.x+20,bat.y+10,45,30)||isCollisionwithmonster(bat.x+20,bat.y+10,45,30,as1.x+9,as1.y+5,41,41)||isCollisionwithmonster(bat.x+20,bat.y+10,45,30,as2.x+9,as2.y+5,41,41)||isCollisionwithmonster(bat.x+20,bat.y+10,45,30,as3.x+9,as3.y+5,41,41))
+        if(isCollisionwithmonster(b1.x+57,b1.y+86,45,7,bat.x+20,bat.y+10,45,30)||isCollisionwithmonster(frog.x+100,frog.y+80,200,150,bat.x+20,bat.y+10,45,30)||isCollisionwithmonster(bat.x+20,bat.y+10,45,30,as1.x+9,as1.y+5,41,41)||isCollisionwithmonster(bat.x+20,bat.y+10,45,30,as2.x+9,as2.y+5,41,41)||isCollisionwithmonster(bat.x+20,bat.y+10,45,30,as3.x+9,as3.y+5,41,41))
         {
-            bat.speed=0;
+             bat.speed=0;
+            if(isCollisionwithmonster(b1.x+57,b1.y+86,45,7,bat.x+20,bat.y+10,45,30))
+            {
+                b1.x=3000;
+                collision=true;
+            }
+
         }
 
         graphics.render2(bat.x,bat.y,batman);
@@ -227,6 +248,7 @@ void asteroidMove(Graphics &graphics,Sprite &asteroid,Mouse &as1,Mouse &as2,Mous
         }
 }
    //hitbox
+        //graphics.drawRect(b1.x+57,b1.y+86,45,7);
         //graphics.drawRect(man.x+90,man.y+80,45,60);
         //graphics.drawRect(monster.x,monster.y+6,105,65);
         //graphics.drawRect(frog.x+100,frog.y+80,200,150);

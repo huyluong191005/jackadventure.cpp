@@ -41,6 +41,7 @@
 		</Compiler>
 		<Unit filename="Initalize.h" />
 		<Unit filename="background.h" />
+		<Unit filename="bullet.h" />
 		<Unit filename="button.h" />
 		<Unit filename="defs.h" />
 		<Unit filename="graphics.h" />

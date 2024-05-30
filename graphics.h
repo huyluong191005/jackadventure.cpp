@@ -208,52 +208,6 @@ struct Graphics {
     }
 
 
-
-    void startPage(Graphics graphics,ScrollingBackground layer1,SDL_Texture* start)
-    {
-        graphics.render(layer1);
-        graphics.renderTexture(start,300,250);
-
-        presentScene();
-
-    }
-    bool mouseClickrect(int Tx,int Ty,int w,int h)
-    {
-        int x,y;
-        SDL_Event event;
-        while(SDL_WaitEvent(&event))
-        {
-            SDL_GetMouseState(&x, &y);
-
-            if(event.type==SDL_MOUSEBUTTONDOWN)
-            {
-                if(x>=Tx&&x<=Tx+w)
-                {
-                    if(y>=Ty&&y<=Ty+h)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-
-        }
-        return false;
-
-    }
- bool mouseClickstart() {
-    int x, y;
-    SDL_Event event;
-    while (SDL_WaitEvent(&event)) {
-        if (event.type == SDL_MOUSEBUTTONDOWN) {
-            SDL_GetMouseState(&x, &y);
-            if (x >= 510 && x <= 510 + 166 && y >= 570 && y <= 570 + 70) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
      void drawRect(int x, int y, int width, int height) {
         SDL_Rect rect = {x, y, width, height};
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Đặt màu vẽ là màu đỏ

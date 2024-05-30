@@ -32,7 +32,7 @@ void startPage(Graphics &graphics,Mouse &man,SDL_Texture*back1,SDL_Texture*start
             graphics.render2(man.x,man.y,idle);
              if(helb)
             {
-                graphics.renderTexture(helpTexture,100,100);
+                graphics.renderTexture(helpTexture,-30,0);
             }
              if(leaderboard)
             {

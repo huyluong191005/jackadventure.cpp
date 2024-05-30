@@ -1,6 +1,7 @@
 #include "defs.h"
 #include "graphics.h"
 #include "background.h"
+#include "bullet.h"
 #include "monster.h"
 #include "music.h"
 #include "Initalize.h"
@@ -8,13 +9,16 @@
 #include "player.h"
 
 
+
 int main(int argc, char* argv[])
 {
     Graphics graphics;
     graphics.init();
 
-    ScrollingBackground layer1,layer2,layer3,lights1,layer4,layer5,lights2,layer6,layer7,layer8,layer9;
-    backtexture(graphics,layer1,layer2,layer3,lights1,layer4,layer5,lights2,layer6,layer7,layer8,layer9);
+    Background background;
+    background.loadTextures(graphics);
+    background.speed=0;
+    int delta=0;
     Sprite run;
     SDL_Texture* runTexture = graphics.loadTexture(RUN_SPRITE_FILE);
     run.init(runTexture, 8, RUN_CLIPS);
@@ -51,6 +55,21 @@ int main(int argc, char* argv[])
     Sprite asteroid,asteroid2;
     SDL_Texture* asteroidTexture=graphics.loadTexture(ASTEROID_SPRITE_FILE);
     asteroid.init(asteroidTexture,3,ASTEROID_CLIPS);
+    Sprite sunDragon;
+    SDL_Texture*dragonTexture=graphics.loadTexture(DRAGON_SPRITE_FILE);
+    sunDragon.init(dragonTexture,9,DRAGON_CLIPS);
+    Sprite attack;
+    SDL_Texture* attackTexture=graphics.loadTexture(ATTACK_SPRITE_FILE);
+    attack.init(attackTexture,14,ATTACK_CLIPS);
+    Sprite arrowImpact;
+    SDL_Texture*arrowimpactTexture=graphics.loadTexture(ARROWIMPACT_SPRITE_FILE);
+    arrowImpact.init(arrowimpactTexture,5,ARROWIMPACT_CLIPS);
+    Sprite dash;
+    SDL_Texture*dashTexture=graphics.loadTexture(DASH_SPRITE_FILE);
+    dash.init(dashTexture,14,DASH_CLIPS);
+    Sprite melee;
+    SDL_Texture*meleeTexture=graphics.loadTexture(MELEE_SPRITE_FILE);
+    melee.init(meleeTexture,28,MELEE_CLIPS);
 
     SDL_Texture* poisonimpactTexture=graphics.loadTexture(POISONIMPACT_SPRITE_FILE);
     SDL_Texture *start=graphics.loadTexture("images\\play.png");
@@ -73,6 +92,7 @@ int main(int argc, char* argv[])
     SDL_Texture *musicoff=graphics.loadTexture("images\\sound_off.png");
     SDL_Texture *settingbar=graphics.loadTexture("images\\settingbar.png");
     SDL_Texture*sound; SDL_Texture*music;
+    SDL_Texture*arrow=graphics.loadTexture("images\\ArrowSpit.png");
 
     Mix_Music *gMusic = loadMusic("sounds\\Uprising.wav");
     Mix_Chunk *click = loadSound("sounds\\Menu Selection Click.wav");
@@ -86,6 +106,9 @@ int main(int argc, char* argv[])
     Mix_Chunk *poisonImpact = loadSound("sounds\\impactsplat03.wav");
     Mix_Chunk *frogGrunt = loadSound("sounds\\Large Monster Grunt Hit 02.wav");
     Mix_Chunk *frogGrunt2 = loadSound("sounds\\monster-5.wav");
+    Mix_Chunk *shoot = loadSound("sounds\\shoot1.mp3");
+    Mix_Chunk *arrowHit2= loadSound("sounds\\arrowHit02.wav");
+    Mix_Chunk *arrowHit = loadSound("sounds\\arrow-wood-impact-146418.mp3");
 
     TTF_Font* font = graphics.loadFont("font\\youmurdererbb_reg.ttf", 81);
 
@@ -94,12 +117,18 @@ int main(int argc, char* argv[])
     Mouse man; man.x=300; man.y=225; man.isJumping=true; man.isFreefalling=false; man.speed=14;
     Mouse frog; frog.x=-350; frog.y=410; frog.speed=2;
     Mouse monster; monster.x=900; monster.y=570; monster.speed=5;
+    Mouse dragon; dragon.x=3000;dragon.y=160;
     Mouse bat; bat.x=1500; bat.y=400; bat.speed=7;
     Mouse crab; crab.x=-200; crab.y=415; crab.speed=5;
     Mouse poi; poi.x=-150; poi.y=570; poi.speed=4;
     Mouse as1; as1.x=350; as1.y=-70;
     Mouse as2; as2.x=50; as2.y=-150;
     Mouse as3; as3.x=500; as3.y=-200;
+    Bullet b1;
+    b1.x=-100;
+    b1.y=-100;
+    b1.dx=14;
+    b1.dy=0;
     int frame(0);
     int biteframecount(0);
     int disappearcount(0);
@@ -110,6 +139,9 @@ int main(int argc, char* argv[])
     int scores=0;
     bool poison(0);
     bool collision(0),collision2(0),collision3(0),collision4(0);
+    bool isattacking=false;
+    bool isattacking2=false;
+    bool isattacking3=false;
     bool over=false;
     bool startgame=false;
     bool quit = false;
@@ -121,7 +153,9 @@ int main(int argc, char* argv[])
     bool soundOn=true;
     bool musicOn=true;
     bool leaderboard=false;
+    bool isPaused=false;
     int highScore[5];
+    int frameCount(0),cooldown(0);
 
     SDL_Event e;
     while(!quit||game)
@@ -140,6 +174,14 @@ int main(int argc, char* argv[])
         else{
         int scores1=0;
         int scores=0;
+        dragon.x=3000;
+        dragon.y=170;
+        b1.x=-1000;
+        b1.y=-1000;
+        b1.dx=14;
+        b1.dy=0;
+        delta=0;
+        background.speed=0;
         resetData(man,frog,monster,bat,crab,poi,as1,as2,as3,frame,poison,collision2,collision3,collision4,biteframecount,disappearcount,disappearcount2,over,counttodealth,jumptimes,quit);
 
     while( !quit ) {
@@ -180,33 +222,137 @@ int main(int argc, char* argv[])
                 quit = true;
                 game=false;
             }
+            else if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)
+            {
+                isPaused = !isPaused;
+            }
         }
+        if(!isPaused){
         frame++;//tinh so frame
         scores1++;
+        if(scores1%500==0)
+        {
+            background.speed+=1;
+            delta+=1;
+        }
         if(frame==1500) frame=0;
         scores=scores1/5;
         intToCharArray(scores,score);
         SDL_Color color = {225, 0, 0, 0};
         SDL_Texture* scoreText = graphics.renderText(score, font, color);
 
-        background1(graphics,layer1,layer2,layer3,lights1,layer4,layer5,lights2);
+        background.background1(graphics);
         crabMove(graphics,crab,boss2,laser,frame,gLaser,crabGrunt,dropBomb);
-        background2(graphics,layer6,layer8,layer9);
-        background3(graphics,layer7);
+        background.background2(graphics);
         asteroidMove(graphics,asteroid,as1,as2,as3,frame,deathFlash);
 
         //player
         const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+            if(currentKeyStates[SDL_SCANCODE_S]&&cooldown>=20&&!isattacking2&&!isattacking3)
+        {
+            isattacking=true;
+        }
+        else
+        {
+            cooldown++;
+        }
+        if(isattacking&&counttodealth==0)
+        {
+            if(frameCount==12) play(shoot);
+            frameCount++;
+            if(frameCount>=3&&frameCount<=10) man.x+=25;
+
+            if(frameCount==23)
+                {
+                    b1.x=man.x;
+                    b1.y=man.y;
+                }
+             if(frameCount==28)
+            {
+                frameCount=0;
+                cooldown=0;
+                isattacking=false;
+            }
+            if(frameCount<=14)graphics.render2(man.x,man.y,dash);
+            if(frameCount>14) graphics.render2(man.x,man.y,attack);
+            dash.tick();
+            attack.tick();
+        }
+
+        if(currentKeyStates[SDL_SCANCODE_D]&&cooldown>=20&&!isattacking&&!isattacking2)
+        {
+            isattacking3=true;
+        }
+        else
+        {
+            cooldown++;
+        }
+        if(isattacking3&&counttodealth==0)
+        {
+            if(frameCount==0) play(shoot);
+            frameCount++;
+
+            if(frameCount==9)
+                {
+                    b1.x=man.x;
+                    b1.y=man.y;
+                }
+             if(frameCount==14)
+            {
+                frameCount=0;
+                cooldown=0;
+                isattacking3=false;
+            }
+            graphics.render2(man.x,man.y,attack);
+            attack.tick();
+        }
+        if(currentKeyStates[SDL_SCANCODE_A]&&cooldown>=20&&!isattacking&&!isattacking3&&!man.isFreefalling)
+        {
+            isattacking2=true;
+        }
+        else
+        {
+            cooldown++;
+        }
+        if(isattacking2&&counttodealth==0)
+        {
+            frameCount++;
+
+             if(frameCount==28)
+            {
+                frameCount=0;
+                cooldown=0;
+                isattacking2=false;
+            }
+            graphics.render2(man.x,man.y,melee);
+            melee.tick();
+        }
+
+        graphics.renderTexture(arrow,b1.x+70,b1.y+78);
+        b1.move();
+         if(isCollisionwithmonster(monster.x,monster.y+6,105,65,b1.x+57,b1.y+86,45,7)||isCollisionwithmonster(b1.x+57,b1.y+86,45,7,bat.x+20,bat.y+10,45,30)) play(arrowHit);
         playerCollision(graphics,man,bat,as1,as2,as3,monster,poi,collision2,collision3,counttodealth,fall1,gDeath,poisonImpact,death,poisonimpact,over);
-        playerMove(graphics,currentKeyStates,over,man,collision2,collision3,run,jumptimes,gJump,jump,fall1,fall2);
-        playerJump(graphics,man,jumptimes,falltimes,gFall);
+        playerMove(graphics,delta,currentKeyStates,over,man,collision2,collision3,isattacking,isattacking2,isattacking3,run,jumptimes,gJump,jump,fall1,fall2);
+        playerJump(graphics,man,jumptimes,falltimes,gFall,delta);
         //
           //monster
         frogMove(graphics,frog,man,poi,boss1,poisonattack,poisons,poisonimpact,boss1Texture,boss1_2Texture,poisonattackTexture,poisonTexture,poisonimpactTexture,frame,biteframecount,over,poison,frogGrunt,frogGrunt2);
-        rhinoMove(graphics,monster,frog,rhino,poisonimpact,rhinoTexture,rhinohitTexture,disappearcount,poi,frame,collision4,as1,as2,as3,poisonImpact);
-        batMove(graphics,batman,bat,frog,batTexture,bat2Texture,disappearcount2,as1,as2,as3);
+        rhinoMove(graphics,delta,monster,frog,b1,rhino,poisonimpact,arrowImpact,rhinoTexture,rhinohitTexture,disappearcount,poi,frame,collision4,collision,as1,as2,as3,poisonImpact);
+        batMove(graphics,delta,batman,arrowImpact,bat,frog,batTexture,bat2Texture,disappearcount2,as1,as2,as3,b1,collision);
         //
+        if(b1.x>SCREEN_WIDTH) b1.x=3000;
 
+        }
+
+
+         SDL_Color color = {225, 0, 0, 0};
+        SDL_Texture* scoreText = graphics.renderText(score, font, color);
+
+        if(isPaused) {
+            SDL_Texture* pressSpace = graphics.renderText("PRESS SPACE TO CONTINUE", font, color);
+            graphics.renderTexture(pressSpace, 100,400);
+        }
         if(!over) graphics.renderTexture(scoreText, 0,0);
         graphics.presentScene();
         SDL_Delay(35);
@@ -215,7 +361,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    destroybackground(graphics,layer1,layer2,layer3,lights1,layer4,layer5,lights2,layer6,layer7,layer8,layer9);
+    background.destroyTextures();
     SDL_DestroyTexture( runTexture ); runTexture = nullptr;
     SDL_DestroyTexture( jumpTexture ); jumpTexture = nullptr;
     SDL_DestroyTexture( boss1Texture ); boss1Texture = nullptr;

@@ -49,10 +49,11 @@ void handleEvents(bool& quit, bool& startGame,bool &game,bool &helb,bool &settin
             }
               else if((mouseX-752)*(mouseX-752)+(mouseY-70)*(mouseY-70)<=50*50)
             {
+                 if(helb||settings||leaderboard) play(click);
                 helb=false;
                 settings=false;
                 leaderboard=false;
-                play(click);
+
             }
 
 

@@ -42,13 +42,7 @@ Mix_Music *loadMusic(const char* path)
         Mix_PlayChannel(-1, sound, 0);
     }
 }
-void adjustVolume(int change) {
-    int volume = Mix_Volume(-1, -1);
-    volume += change;
-    if(volume < 0) volume = 0;
-    if(volume > 128) volume = 128;
-    Mix_Volume(-1, volume);
-}
+
 void setVolume(int volume) {
     if(volume < 0) volume = 0;
     if(volume > MIX_MAX_VOLUME) volume = MIX_MAX_VOLUME;
